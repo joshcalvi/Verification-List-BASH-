@@ -2,7 +2,7 @@
 
 #by default (no options) this script will search comments for "MCCET"
 
-branches="master rel.MC2024.6 rel.MC2023.12 rel.MC2022.12"
+branches="master"
 
 maxcount=50
 
@@ -12,8 +12,7 @@ while getopts ':r' OPTION; do
 	case "$OPTION" in
 
 		r)		
-					
-			
+				echo "$OPTARG"
 				maxcount=$OPTARG
 				echo maxcount set to "$OPTARG"
 				;;
