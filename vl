@@ -2,7 +2,7 @@
 
 #by default (no options) this script will search comments for "MCCET"
 
-branches="master"
+branches="master rel.MC2024.6 rel.MC2023.12 rel.MC2022.12"
 
 maxcount=50
 
