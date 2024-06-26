@@ -6,26 +6,15 @@ branches="master"
 
 maxcount=50
 
-# Move -r option to its own while loop
-
-while getopts ':r' OPTION; do
+while getopts 'r:k:u:a:' OPTION; do
 	case "$OPTION" in
 
 		r)		
-				echo "$OPTARG"
 				maxcount=$OPTARG
-				echo maxcount set to "$OPTARG"
+				echo number of results set to "$OPTARG"
 				;;
-	esac
-done
-
-shift "$(($OPTIND -1))"
-
-# end of -r while loop
-
-while getopts ':k:u:a' OPTION; do
-	case "$OPTION" in
-
+		
+		
 		a)
 				echo searching...
 				echo 
