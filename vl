@@ -6,7 +6,9 @@ branches="master rel.MC2024.6 rel.MC2023.12 rel.MC2022.12"
 
 maxcount=50
 
-while getopts ':r:k:u:a' OPTION; do
+# Move -r option to its own while loop
+
+while getopts ':r' OPTION; do
 	case "$OPTION" in
 
 		r)		
@@ -15,7 +17,16 @@ while getopts ':r:k:u:a' OPTION; do
 				maxcount=$OPTARG
 				echo maxcount set to "$OPTARG"
 				;;
-		
+	esac
+done
+
+shift "$(($OPTIND -1))"
+
+# end of -r while loop
+
+while getopts ':k:u:a' OPTION; do
+	case "$OPTION" in
+
 		a)
 				echo searching...
 				echo 
