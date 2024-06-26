@@ -6,9 +6,14 @@ branches="master rel.MC2024.6 rel.MC2023.12 rel.MC2022.12"
 
 maxcount=50
 
-while getopts ':r:k:u:a' OPTION; do
+while getopts 'r:k:u:a:' OPTION; do
 	case "$OPTION" in
 
+		r)		
+				maxcount=$OPTARG
+				echo number of results set to "$OPTARG"
+				;;
+		
 		
 		a)
 				echo searching...
@@ -49,12 +54,6 @@ while getopts ':r:k:u:a' OPTION; do
 				done
 				;;
 		
-		r)		
-					
-			
-				maxcount=$OPTARG
-				echo maxcount set to "$OPTARG"
-				;;
 			
 		k)
 				echo showing results matching $OPTARG
