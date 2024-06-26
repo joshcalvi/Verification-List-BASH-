@@ -2,16 +2,18 @@
 
 #by default (no options) this script will search comments for "MCCET"
 
-branches="master rel.MC2024.6 rel.MC2023.12 rel.MC2022.12"
+branches="master"
 
-maxcount=50
+default_max=50
+maxcount=$default_max 
 
-while getopts 'r:k:u:a:' OPTION; do
+while getopts 'r:k:u:a' OPTION; do
 	case "$OPTION" in
 
 		r)		
 				maxcount=$OPTARG
 				echo number of results set to "$OPTARG"
+				#echo "$OPTIND"
 				;;
 		
 		
@@ -68,6 +70,7 @@ while getopts 'r:k:u:a:' OPTION; do
 				echo -e The last "$maxcount" commits matching "\e[1;100m$OPTARG\e[0m" on "\e[1;100m$branch\e[0m" are:
 				echo 
 				git log --grep=$OPTARG -i --reverse --max-parents=1 --max-count=$maxcount --date=format:"%a %b %d %H:%M:%S EDT %Y" --pretty=format:"%cd|qaowner|%an|%h| | |%<(100,trunc)%s"
+				#echo "$OPTIND"
 				done	   
 				;;
 		u)
@@ -103,9 +106,9 @@ shift "$(($OPTIND -1))"
 
 #Default "no options" 
 
-	if [ $OPTIND -eq 1 ]; 
+	if [ $OPTIND -eq 1 ] || [ $OPTIND -eq 3 ]; 
 		then 
-			echo no options found...
+			echo showing last "$maxcount" results matching MCCET...
 			echo 
 			for branch in $branches
 			do
