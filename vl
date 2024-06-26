@@ -1,0 +1,129 @@
+#!/bin/bash
+
+#by default (no options) this script will search comments for "MCCET"
+
+branches="master rel.MC2024.6 rel.MC2023.12 rel.MC2022.12"
+
+maxcount=50
+
+while getopts ':r:k:u:a' OPTION; do
+	case "$OPTION" in
+
+		
+		a)
+				echo searching...
+				echo 
+				for branch in $branches
+				do
+				git checkout $branch
+				git pull -q
+				echo
+				branch=$(git branch --show-current)
+				echo 
+				echo -e "\e[1;42m>---------------$branch---------------<\e[0m"
+				echo
+				echo -e The "$maxcount" most recent commits to "\e[1;100m$branch\e[0m" are:
+				echo 
+				git log --reverse --max-count=$maxcount --date=format:"%a %b %d %H:%M:%S EDT %Y" --pretty=format:"%cd|qaowner|%an|%h| | |%<(100,trunc)%s"
+		                #--since=4.weeks
+				echo
+				done
+				;;
+
+		m)
+				echo matching MCCET...
+				echo 
+				for branch in $branches
+				do
+				git checkout $branch
+				git pull -q
+				echo
+				branch=$(git branch --show-current)
+				echo 
+				echo -e "\e[1;42m>---------------$branch---------------<\e[0m"
+				echo
+				echo -e The last "$maxcount" commits matching "\e[1;100mMCCET\e[0m" on "\e[1;100m$branch\e[0m" are:
+				echo 
+				git log --grep=MCCET -i --reverse --max-count=$maxcount --date=format:"%a %b %d %H:%M:%S EDT %Y" --pretty=format:"%cd|qaowner|%an|%h| | |%<(100,trunc)%s"
+				echo
+				done
+				;;
+		
+		r)		
+					
+			
+				maxcount=$OPTARG
+				echo maxcount set to "$OPTARG"
+				;;
+			
+		k)
+				echo showing results matching $OPTARG
+      				for branch in $branches
+				do
+				git checkout $branch
+				git pull -q
+				echo
+				echo
+				echo -e "\e[1;42m---------------$branch---------------\e[0m"
+				echo
+				echo -e The last "$maxcount" commits matching "\e[1;100m$OPTARG\e[0m" on "\e[1;100m$branch\e[0m" are:
+				echo 
+				git log --grep=$OPTARG -i --reverse --max-parents=1 --max-count=$maxcount --date=format:"%a %b %d %H:%M:%S EDT %Y" --pretty=format:"%cd|qaowner|%an|%h| | |%<(100,trunc)%s"
+				done	   
+				;;
+		u)
+				echo showing results matching $OPTARG
+				for branch in $branches
+				do
+				git checkout $branch
+				git pull -q 
+				echo
+				echo 
+				echo -e "\e[1;42m---------------$branch---------------\e[0m"
+				echo
+				echo -e The last "$maxcount" commits by "\e[1;100m$OPTARG\e[0m" on "\e[1;100m$branch\e[0m" are:
+				echo 
+				git log --author="$OPTARG" -i --reverse --max-parents=1 --max-count=$maxcount --date=format:"%a %b %d %H:%M:%S EDT %Y" --pretty=format:"%cd|qaowner|%an|%h| | |%<(100,trunc)%s"
+				done
+				;;
+			
+		\?)
+				echo  + + + + + + + + + + + + + + + + + + + + + + + + + + + + 
+				echo + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+				echo
+				printf "%s\n" "to use this script enter one of the following options:" "" "<none> returns a default comment search for 'MCCET'" "-k <keyword> to search by keyword" "-u <user> to search by user name"
+				echo
+				echo + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+				echo  + + + + + + + + + + + + + + + + + + + + + + + + + + + + 
+				;;
+		
+	esac
+done
+
+shift "$(($OPTIND -1))"
+
+#Default "no options" 
+
+	if [ $OPTIND -eq 1 ]; 
+		then 
+			echo no options found...
+			echo 
+			for branch in $branches
+			do
+			git checkout -f $branch
+			git pull -q
+			echo
+			branch=$(git branch --show-current)
+			echo 
+			echo -e "\e[1;42m>---------------$branch---------------<\e[0m"
+			echo
+			echo -e The last "$maxcount" commits matching "\e[1;100mMCCET\e[0m" on "\e[1;100m$branch\e[0m" are:
+			echo 
+			git log --grep=MCCET -i --reverse --max-count=$maxcount --date=format:"%a %b %d %H:%M:%S EDT %Y" --pretty=format:"%cd|qaowner|%an|%h| | |%<(100,trunc)%s"
+			echo
+		done
+	fi
+
+
+echo 
+echo ^^^^^^^^^^^NO MORE RESULTS^^^^^^^^^^^^^^^
